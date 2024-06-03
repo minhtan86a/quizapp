@@ -9,6 +9,7 @@ export default function QuestionTimer({ timeout, onTimeout }) {
   //we have 2 dependencies in this case.
   //Make sure this effect function gets re-executed when one of those dependencies changes
   useEffect(() => {
+    console.log("SETTING TIMEOUT");
     setTimeout(onTimeout, timeout);
   }, [timeout, onTimeout]);
 
@@ -18,6 +19,7 @@ export default function QuestionTimer({ timeout, onTimeout }) {
   //the component will not execute all the time, only when dependencies change
   //in this case, we dont have any dependencies that put in the empty array
   useEffect(() => {
+    console.log("SETTING INTERVAL");
     setInterval(() => {
       setRemainingTime((prevRemainingTime) => prevRemainingTime - 100);
     }, 100);
