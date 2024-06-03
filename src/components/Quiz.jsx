@@ -26,9 +26,10 @@ export default function Quiz() {
   //useCallback hook to handle Skip answer
   //ensure that functions don't get recreated unless dependencies changed
   //handleSelectAnswer is dependency because it depend on props and state
-  const handleSkipAnswer = useCallback(() => {
-    () => handleSelectAnswer(null);
-  }, [handleSelectAnswer]);
+  const handleSkipAnswer = useCallback(
+    () => handleSelectAnswer(null),
+    [handleSelectAnswer]
+  );
 
   //Check quiz complete
   if (quizIsComplete) {
@@ -49,9 +50,10 @@ export default function Quiz() {
     <div id="quiz">
       <div id="question">
         <QuestionTimer
+          //key is used to destroy the old component and create a new one -> unmount and remount it
+          key={activeQuestionIndex}
           timeout={10000}
           onTimeout={handleSkipAnswer}
-          //set null -> no answer was chosen for this question
         />
         <h2>{QUESTIONS[activeQuestionIndex].text}</h2>
         <ul id="answers">

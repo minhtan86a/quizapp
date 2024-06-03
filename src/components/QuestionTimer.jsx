@@ -10,7 +10,12 @@ export default function QuestionTimer({ timeout, onTimeout }) {
   //Make sure this effect function gets re-executed when one of those dependencies changes
   useEffect(() => {
     console.log("SETTING TIMEOUT");
-    setTimeout(onTimeout, timeout);
+    const timer = setTimeout(onTimeout, timeout);
+
+    //clean up function
+    return () => {
+      clearTimeout(timer);
+    };
   }, [timeout, onTimeout]);
 
   //update remaining time every 100 milliseconds
@@ -20,9 +25,16 @@ export default function QuestionTimer({ timeout, onTimeout }) {
   //in this case, we dont have any dependencies that put in the empty array
   useEffect(() => {
     console.log("SETTING INTERVAL");
-    setInterval(() => {
+    const interval = setInterval(() => {
       setRemainingTime((prevRemainingTime) => prevRemainingTime - 100);
     }, 100);
+
+    //clean up function
+    //auto execute before run this effect function again
+    //or when unmount this component from the DOM
+    return () => {
+      clearInterval(interval);
+    };
   }, []);
 
   return <progress id="question-time" max={timeout} value={remainingTime} />;
